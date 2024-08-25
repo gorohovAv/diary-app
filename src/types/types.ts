@@ -1,4 +1,4 @@
 export type DiaryItem = {
-  date: Date;
+  date: number;
   content: string;
 };

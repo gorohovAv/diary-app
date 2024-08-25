@@ -1,0 +1,16 @@
+<p-card class="card">
+  <ng-template pTemplate="header"> {{ date }} </ng-template>
+  <div [innerHTML]="content"></div>
+  <ng-template pTemplate="footer">
+    <span class="p-buttonset">
+      <button pButton pRipple label="Редактировать"></button>
+      <button
+        pButton
+        pRipple
+        label="Удалить"
+        icon="pi pi-trash"
+        class="p-button-warning"
+      ></button>
+    </span>
+  </ng-template>
+</p-card>

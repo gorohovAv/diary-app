@@ -1,0 +1,6 @@
+<main class="diary">
+  <p-button label="Создать" (click)="handleMakeNewItem()"></p-button>
+  @for(element of list; track element){
+  <app-card [content]="element"></app-card>
+  }
+</main>

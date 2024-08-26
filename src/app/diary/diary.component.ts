@@ -14,7 +14,7 @@ import { DiaryItem } from '@/types/types';
   styleUrl: './diary.component.css',
 })
 export class DiaryComponent {
-  list: string[] = ['<p>121212121212</p> <b>BOLD</b>', '2 запись', '3 запись'];
+  //list: string[] = ['<p>121212121212</p> <b>BOLD</b>', '2 запись', '3 запись'];
   private recordsService = inject(RecordsService);
 
   records: DiaryItem[] = this.recordsService
@@ -22,7 +22,7 @@ export class DiaryComponent {
     .map((key) => {
       // записываем все записи в массив
       return {
-        date: Date.parse(key),
+        date: parseInt(key),
         content: this.recordsService.getRecord(key)!,
       };
     })
@@ -32,5 +32,6 @@ export class DiaryComponent {
 
   handleMakeNewItem() {
     this.router.navigate([`/edit`]);
+    console.log(this.records);
   }
 }

@@ -1,10 +1,21 @@
 import { Injectable } from '@angular/core';
 import { DiaryItem } from '@/types/types';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RecordsService {
+  private storageSub = new BehaviorSubject<string[]>(
+    this.getItemsFromLocalStorage()
+  );
+  storageChanges$ = this.storageSub.asObservable();
+
+  private getItemsFromLocalStorage(): string[] {
+    const items = localStorage.getItem('myItems');
+    return items ? JSON.parse(items) : [];
+  }
+
   constructor() {}
 
   getKeys(): string[] {
@@ -19,8 +30,8 @@ export class RecordsService {
     return localStorage.getItem(key);
   }
 
-  deleteRecord(item: DiaryItem) {
-    localStorage.removeItem(item.date.toString());
+  deleteRecord(date: number) {
+    localStorage.removeItem(date.toString());
   }
 
   pushRecord(item: DiaryItem) {

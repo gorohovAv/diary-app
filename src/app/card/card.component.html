@@ -1,5 +1,5 @@
 <p-card class="card">
-  <ng-template pTemplate="header"> {{ date }} </ng-template>
+  <ng-template pTemplate="header"> {{ formattedDate }} </ng-template>
   <div [innerHTML]="content"></div>
   <ng-template pTemplate="footer">
     <span class="p-buttonset">
@@ -9,7 +9,13 @@
         label="Редактировать"
         (click)="navigateToChange()"
       ></button>
-      <button pButton pRipple label="Удалить" class="p-button-warning"></button>
+      <button
+        pButton
+        pRipple
+        label="Удалить"
+        class="p-button-warning"
+        (click)="handleDelete()"
+      ></button>
     </span>
   </ng-template>
 </p-card>

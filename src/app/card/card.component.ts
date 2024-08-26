@@ -16,11 +16,11 @@ export class CardComponent {
   @Input() content: string = '';
   @Input() date: number = 0;
   @Input() diaryItem: DiaryItem = {
-    date: new Date(),
+    date: 0,
     content: '',
   };
 
   navigateToChange() {
-    this.router.navigate([`/${this.date}`]);
+    this.router.navigate([`/edit/${this.diaryItem.date}`]);
   }
 }

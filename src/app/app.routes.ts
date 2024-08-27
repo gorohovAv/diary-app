@@ -4,9 +4,12 @@ import { DiaryComponent } from './diary/diary.component';
 
 export const routes: Routes = [
   { path: '', component: DiaryComponent },
+  { path: 'edit', component: RecordComponent },
+  { path: 'edit/:id', component: RecordComponent },
+  /*
   {
     path: 'edit',
     component: RecordComponent,
     children: [{ path: ':id', component: RecordComponent }],
-  },
+  }, */
 ];

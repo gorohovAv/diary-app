@@ -19,6 +19,7 @@ export class DiaryComponent {
 
   records: DiaryItem[] = this.recordsService
     .getKeys()
+    .filter((key) => !key.includes('image'))
     .map((key) => {
       // записываем все записи в массив
       return {
@@ -32,6 +33,12 @@ export class DiaryComponent {
 
   handleMakeNewItem() {
     this.router.navigate([`/edit`]);
+    console.log(this.records);
+  }
+
+  handleDeleteItem(date: number) {
+    this.records = this.records.filter((element) => element.date !== date);
+    console.log('event fired');
     console.log(this.records);
   }
 }

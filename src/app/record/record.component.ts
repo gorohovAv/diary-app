@@ -1,34 +1,73 @@
 import { Component, inject, Input } from '@angular/core';
 import { EditorModule } from 'primeng/editor';
 import { ButtonModule } from 'primeng/button';
-import { FormsModule, ReactiveFormsModule, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { FileUploadModule } from 'primeng/fileupload';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RecordsService } from '@/app/records.service';
-import { ActivatedRoute } from '@angular/router';
+
+interface UploadEvent {
+  originalEvent: Event;
+  files: File[];
+}
 
 @Component({
   selector: 'app-record',
   standalone: true,
-  imports: [EditorModule, ButtonModule, FormsModule],
+  imports: [
+    EditorModule,
+    ButtonModule,
+    FormsModule,
+    FileUploadModule,
+    ToastModule,
+  ],
   templateUrl: './record.component.html',
   styleUrl: './record.component.css',
+  providers: [MessageService],
 })
 export class RecordComponent {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private route: ActivatedRoute) {}
   private recordsService = inject(RecordsService);
-  //@Input() id = '';
-  private route = inject(ActivatedRoute);
+  id!: string;
+  selectedFile: File | null = null;
+  uploadedImageUrl: string | null = null;
   text = '';
+  /*
+  ngOnInit() {
+    this.text = this.recordsService.getRecord(this.id.toString())!;
+    console.log(this.id);
+  } */
 
   ngOnInit() {
-    const id = Number(this.route.snapshot.params['id']);
-    this.text = this.recordsService.getRecord(id.toString())!;
-    console.log(id);
-    console.log(this.route);
+    this.route.paramMap.subscribe((params) => {
+      this.id = params.get('id') || '';
+      this.text = this.recordsService.getRecord(this.id)!;
+      console.log(this.id);
+    });
   }
 
   handleSave() {
-    this.recordsService.pushRecord({ date: Date.now(), content: this.text });
+    const timestamp = Date.now(); // требуется для соответствия таймстемпа для картинки и заметки в localStorage
+    this.recordsService.pushRecord({ date: timestamp, content: this.text });
     this.router.navigate(['/']);
+    if (this.selectedFile) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const imageBase64 = reader.result as string;
+        this.recordsService.saveImage(timestamp.toString(), imageBase64);
+        console.log(this.id);
+        this.uploadedImageUrl = this.recordsService.getImage(this.id);
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
+  }
+
+  onFileSelect(event: any) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+    }
   }
 }

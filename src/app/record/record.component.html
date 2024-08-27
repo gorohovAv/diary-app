@@ -1,5 +1,27 @@
-<span class="p-buttonset">
-  <button pButton pRipple label="Сохранить" (click)="handleSave()"></button>
-</span>
-
-<p-editor [(ngModel)]="text" [style]="{ height: '320px' }" />
+<div class="container">
+  <span class="p-buttonset">
+    <button pButton pRipple label="Сохранить" (click)="handleSave()"></button>
+  </span>
+  <p-editor [(ngModel)]="text" [style]="{ height: '320px' }">
+    <ng-template pTemplate="header">
+      <span class="ql-formats">
+        <button type="button" class="ql-bold" aria-label="Bold"></button>
+        <button type="button" class="ql-italic" aria-label="Italic"></button>
+        <button
+          type="button"
+          class="ql-underline"
+          aria-label="Underline"
+        ></button>
+      </span>
+    </ng-template>
+  </p-editor>
+  <div class="input_wrapper">
+    <input
+      type="file"
+      (change)="onFileSelect($event)"
+      accept="image/*"
+      class="upload_button"
+    />
+    <p>{{ selectedFile }}</p>
+  </div>
+</div>

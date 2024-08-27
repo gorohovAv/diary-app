@@ -1,21 +1,10 @@
 import { Injectable } from '@angular/core';
 import { DiaryItem } from '@/types/types';
-import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RecordsService {
-  private storageSub = new BehaviorSubject<string[]>(
-    this.getItemsFromLocalStorage()
-  );
-  storageChanges$ = this.storageSub.asObservable();
-
-  private getItemsFromLocalStorage(): string[] {
-    const items = localStorage.getItem('myItems');
-    return items ? JSON.parse(items) : [];
-  }
-
   constructor() {}
 
   getKeys(): string[] {
@@ -25,6 +14,15 @@ export class RecordsService {
     }
     return keys;
   }
+  // изображения будут хранится под тем же ключем + "image"
+  // 12122image
+  saveImage(key: string, imageBase64: string): void {
+    localStorage.setItem(key.concat('image'), imageBase64);
+  }
+
+  getImage(key: string): string | null {
+    return localStorage.getItem(key.concat('image'));
+  }
 
   getRecord(key: string) {
     return localStorage.getItem(key);
@@ -32,6 +30,7 @@ export class RecordsService {
 
   deleteRecord(date: number) {
     localStorage.removeItem(date.toString());
+    localStorage.removeItem(date.toString().concat('image'));
   }
 
   pushRecord(item: DiaryItem) {

@@ -1,21 +1,30 @@
-<p-card class="card">
-  <ng-template pTemplate="header"> {{ formattedDate }} </ng-template>
-  <div [innerHTML]="content"></div>
-  <ng-template pTemplate="footer">
-    <span class="p-buttonset">
-      <button
-        pButton
-        pRipple
-        label="Редактировать"
-        (click)="navigateToChange()"
-      ></button>
-      <button
-        pButton
-        pRipple
-        label="Удалить"
-        class="p-button-warning"
-        (click)="handleDelete()"
-      ></button>
-    </span>
-  </ng-template>
-</p-card>
+<article class="card-row">
+  <p-card [style]="{ width: '760px' }">
+    <ng-template pTemplate="header"> {{ formattedDate }} </ng-template>
+    <article class="card-row">
+      <div [innerHTML]="content" [style]="{ width: '600px' }"></div>
+      <img
+        [src]="imageSrc"
+        alt="Загруженное изображение"
+        style="width: 200px"
+      />
+    </article>
+    <ng-template pTemplate="footer">
+      <span class="p-buttonset">
+        <button
+          pButton
+          pRipple
+          label="Редактировать"
+          (click)="navigateToChange()"
+        ></button>
+        <button
+          pButton
+          pRipple
+          label="Удалить"
+          class="p-button-warning"
+          (click)="handleDelete()"
+        ></button>
+      </span>
+    </ng-template>
+  </p-card>
+</article>

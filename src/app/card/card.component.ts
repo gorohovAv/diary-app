@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, Output, EventEmitter } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { DiaryItem } from '@/types/types';
@@ -21,19 +21,33 @@ export class CardComponent {
     date: 0,
     content: '',
   }; */
+  @Output() deleteEvent = new EventEmitter<number>();
+
+  private recordsService = inject(RecordsService);
+
+  ngOnInit(): void {
+    this.loadImage();
+  }
+
+  imageSrc: string | null = null;
+
+  //imageSrc = this.recordsService.getImage(this.date.toString());
+
+  loadImage(): void {
+    this.imageSrc = this.recordsService.getImage(this.date.toString());
+  }
 
   get formattedDate(): string {
     const dateObj = new Date(this.date);
     return dateObj.toLocaleDateString(); // Преобразование для корректного отображения
   }
 
-  private recordsService = inject(RecordsService);
-
   navigateToChange() {
     this.router.navigate([`/edit/${this.date}`]);
   }
 
   handleDelete() {
-    this.recordsService.deleteRecord(this.date);
+    this.recordsService.deleteRecord(this.date); // удаление из localStorage
+    this.deleteEvent.emit(this.date);
   }
 }

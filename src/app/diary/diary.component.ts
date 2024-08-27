@@ -14,12 +14,11 @@ import { DiaryItem } from '@/types/types';
   styleUrl: './diary.component.css',
 })
 export class DiaryComponent {
-  //list: string[] = ['<p>121212121212</p> <b>BOLD</b>', '2 запись', '3 запись'];
   private recordsService = inject(RecordsService);
 
   records: DiaryItem[] = this.recordsService
     .getKeys()
-    .filter((key) => !key.includes('image'))
+    .filter((key) => !key.includes('image')) // убираем записи картинок
     .map((key) => {
       // записываем все записи в массив
       return {

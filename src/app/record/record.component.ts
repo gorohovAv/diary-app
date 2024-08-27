@@ -8,11 +8,6 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecordsService } from '@/app/records.service';
 
-interface UploadEvent {
-  originalEvent: Event;
-  files: File[];
-}
-
 @Component({
   selector: 'app-record',
   standalone: true,
@@ -34,11 +29,6 @@ export class RecordComponent {
   selectedFile: File | null = null;
   uploadedImageUrl: string | null = null;
   text = '';
-  /*
-  ngOnInit() {
-    this.text = this.recordsService.getRecord(this.id.toString())!;
-    console.log(this.id);
-  } */
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
@@ -50,18 +40,21 @@ export class RecordComponent {
 
   handleSave() {
     const timestamp = Date.now(); // требуется для соответствия таймстемпа для картинки и заметки в localStorage
+    if (this.recordsService.getKeys().includes(this.id)) {
+      this.recordsService.deleteRecord(parseInt(this.id)); // удаление старой записи при редактировании
+    }
     this.recordsService.pushRecord({ date: timestamp, content: this.text });
-    this.router.navigate(['/']);
     if (this.selectedFile) {
       const reader = new FileReader();
       reader.onload = () => {
         const imageBase64 = reader.result as string;
         this.recordsService.saveImage(timestamp.toString(), imageBase64);
-        console.log(this.id);
-        this.uploadedImageUrl = this.recordsService.getImage(this.id);
+        //console.log(this.id);
+        //this.uploadedImageUrl = this.recordsService.getImage(this.id);
       };
       reader.readAsDataURL(this.selectedFile);
     }
+    this.router.navigate(['/']);
   }
 
   onFileSelect(event: any) {

@@ -17,6 +17,5 @@ type DiaryItem = {
   styleUrl: './app.component.css',
 })
 export class AppComponent {
-  list: string[] = ['<p>121212121212</p> <b>BOLD</b>', '2 запись', '3 запись'];
   constructor() {}
 }

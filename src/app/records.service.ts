@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DiaryItem } from '@/types/types';
 
+// сервис для работы с localStorage
 @Injectable({
   providedIn: 'root',
 })

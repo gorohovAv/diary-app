@@ -49,8 +49,6 @@ export class RecordComponent {
       reader.onload = () => {
         const imageBase64 = reader.result as string;
         this.recordsService.saveImage(timestamp.toString(), imageBase64);
-        //console.log(this.id);
-        //this.uploadedImageUrl = this.recordsService.getImage(this.id);
       };
       reader.readAsDataURL(this.selectedFile);
     }
